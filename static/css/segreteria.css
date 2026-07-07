@@ -1,0 +1,290 @@
+/* ── Oggi ── */
+.oggi-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.oggi-orario {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1c2b45;
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+.oggi-info { flex: 1; }
+.oggi-paziente { font-size: 15px; font-weight: 600; color: #1c2b45; }
+.oggi-medico   { font-size: 13px; color: #9a8a6f; margin-top: 3px; }
+
+.oggi-azioni {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Filtri / barra-azioni ── */
+.barra-azioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.barra-azioni .input-campo { flex: 1; min-width: 140px; }
+
+/* ── Tabella ── */
+.azioni-cella {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-sm { padding: 5px 12px !important; font-size: 12px !important; }
+
+/* ── Wizard segreteria ── */
+.wizard { max-width: 720px; }
+.wizard-step { animation: fadeIn 0.18s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c2b45;
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  background: #1c2b45;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.btn-back {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid #c8c4bb;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: #6b5a45;
+  cursor: pointer;
+}
+.btn-back:hover { background: #f1efe8; }
+
+/* ── Risultati ricerca paziente ── */
+.paziente-riga {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #ede9e0;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.paziente-riga:hover {
+  border-color: #3b7dd8;
+  box-shadow: 0 3px 12px rgba(59,125,216,0.1);
+}
+
+.paziente-selezionato-box { margin-bottom: 16px; }
+.paziente-sel-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #e8f0fc;
+  border: 1px solid #3b7dd8;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1c2b45;
+}
+.paziente-sel-pill span { color: #6b5a45; font-size: 13px; }
+
+/* ── Slot ore ── */
+.slot-gruppo { margin-bottom: 24px; }
+.slot-data {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b5a45;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+.slot-ore { display: flex; flex-wrap: wrap; gap: 8px; }
+.slot-ora {
+  padding: 10px 16px;
+  background: white;
+  border: 2px solid #ede9e0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1c2b45;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.slot-ora:hover { background: #1c2b45; border-color: #1c2b45; color: white; }
+
+/* ── Riepilogo ── */
+.riepilogo-box {
+  background: #f7f5ef;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.riepilogo-riga {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #ede9e0;
+  font-size: 14px;
+}
+.riepilogo-riga:last-child { border-bottom: none; }
+.riepilogo-riga span { color: #9a8a6f; }
+
+/* ── Dettaglio paziente modale ── */
+.dettaglio-riga-semplice {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid #f1efe8;
+  font-size: 14px;
+}
+.dettaglio-riga-semplice:last-child { border-bottom: none; }
+.dettaglio-riga-semplice span:first-child { color: #9a8a6f; }
+
+/* ── Slot medici layout ── */
+.slot-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.slot-form-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 24px;
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.slot-lista-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 24px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.slot-form-titolo {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c2b45;
+  margin: 0 0 16px;
+}
+
+.slot-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a8a6f;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 12px 0 4px;
+}
+.slot-form-card .input-campo { width: 100%; }
+
+.slot-btn-aggiungi {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+/* ── Griglia ore slot segreteria ── */
+#ore-grid-slot {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 4px;
+}
+
+#ore-grid-slot .ora-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  line-height: 1.2;
+  width: 100%;
+}
+
+#ore-grid-slot .ora-label {
+  font-size: 10px;
+  font-weight: 500;
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+#ore-grid-slot .ora-vuota {
+  background: #f7f5ef;
+  color: #6b5a45;
+  border-color: #e4e0d8;
+}
+#ore-grid-slot .ora-vuota:hover {
+  background: #1c2b45;
+  border-color: #1c2b45;
+  color: white;
+}
+#ore-grid-slot .ora-vuota:hover .ora-label { color: rgba(255,255,255,0.7); }
+
+#ore-grid-slot .ora-prenotata {
+  background: #f1efe8;
+  color: #c8c4bb;
+  border-color: #e4e0d8;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ── Errore ── */
+.errore { color: #c0392b; font-size: 13px; margin-top: 6px; min-height: 18px; }
+
+/* ── Badge check-in ── */
+.badge-stato { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+.badge-ok    { background: #e6f4ea; color: #1e7e34; }
+.badge-no    { background: #fde8e8; color: #c0392b; }
+.badge-attesa { background: #fef3cd; color: #856404; }

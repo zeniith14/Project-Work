@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Vita Serena - Paziente</title>
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<link rel="stylesheet" href="/static/css/admin.css">
+<link rel="stylesheet" href="/static/css/paziente.css">
+</head>
+<body>
+  <div class="layout-admin">
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-serif">Vita</span> <span class="logo-sans">Serena</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item attivo" data-sezione="prenota">
+          <span class="nav-icon">✚</span> Prenota visita
+        </button>
+        <button class="nav-item" data-sezione="appuntamenti">
+          <span class="nav-icon">☰</span> Appuntamenti
+        </button>
+        <button class="nav-item" data-sezione="storico">
+          <span class="nav-icon">◷</span> Storico visite
+        </button>
+        <button class="nav-item" data-sezione="profilo">
+          <span class="nav-icon">◉</span> Profilo
+        </button>
+        <button class="nav-item" data-sezione="referti">
+          <span class="nav-icon">▤</span> I Miei Referti
+        </button>
+      </nav>
+      <button class="btn-logout-sidebar" onclick="logout()">Esci</button>
+    </aside>
+
+    <main class="admin-main">
+
+      <header class="admin-header">
+        <h2 class="titolo-sezione" id="titolo-sezione">Prenota visita</h2>
+        <span id="nome-paziente" class="nome-admin"></span>
+      </header>
+
+      <!-- ── BANNER NOTIFICHE CHECK-IN ── -->
+      <div id="banner-notifiche" class="banner-notifiche nascosta"></div>
+
+      <!-- ── PRENOTA ── -->
+      <section id="s-prenota" class="sezione">
+        <div class="wizard">
+
+          <!-- Step 1: Specialità -->
+          <div class="wizard-step" id="step-1">
+            <div class="step-header"><span class="step-num">1</span> Scegli la specialità</div>
+            <div class="specialita-grid" id="specialita-grid"></div>
+          </div>
+
+          <!-- Step 2: Medico -->
+          <div class="wizard-step nascosta" id="step-2">
+            <div class="step-header">
+              <span class="step-num">2</span> Scegli il medico
+              <button class="btn-back" onclick="tornaStep(1)">← Indietro</button>
+            </div>
+            <div class="medici-grid" id="medici-grid"></div>
+          </div>
+
+          <!-- Step 3: Slot -->
+          <div class="wizard-step nascosta" id="step-3">
+            <div class="step-header">
+              <span class="step-num">3</span> Scegli data e orario
+              <button class="btn-back" onclick="tornaStep(2)">← Indietro</button>
+            </div>
+            <div id="slot-grid"></div>
+          </div>
+
+          <!-- Step 4: Conferma -->
+          <div class="wizard-step nascosta" id="step-4">
+            <div class="step-header">
+              <span class="step-num">4</span> Conferma prenotazione
+              <button class="btn-back" onclick="tornaStep(3)">← Indietro</button>
+            </div>
+            <div class="riepilogo-box" id="riepilogo"></div>
+            <label class="note-label">Note (opzionale)</label>
+            <textarea id="note-prenotazione" class="input-campo note-area" placeholder="Es. allergie, sintomi..."></textarea>
+            <button class="btn-primario btn-conferma" onclick="confermaPrenotazione()">Conferma prenotazione</button>
+            <div class="errore" id="err-prenota"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── APPUNTAMENTI FUTURI ── -->
+      <section id="s-appuntamenti" class="sezione nascosta">
+        <div class="barra-azioni">
+          <select id="filtro-specialita-app" class="input-campo">
+            <option value="">Tutte le specialità</option>
+          </select>
+          <button class="btn-primario" onclick="filtraAppuntamenti()">Filtra</button>
+        </div>
+        <div id="lista-appuntamenti"></div>
+      </section>
+
+      <!-- ── STORICO ── -->
+      <section id="s-storico" class="sezione nascosta">
+        <div id="lista-storico"></div>
+      </section>
+
+      <!-- ── PROFILO ── -->
+      <section id="s-profilo" class="sezione nascosta">
+        <div class="profilo-card">
+          <div class="profilo-nome" id="profilo-nome"></div>
+          <div class="profilo-email" id="profilo-email"></div>
+          <hr class="profilo-divider">
+          <form id="form-profilo" onsubmit="salvaProfilo(event)">
+            <label>Telefono</label>
+            <input type="text" id="p-telefono" class="input-campo">
+            <label>Data di nascita</label>
+            <input type="date" id="p-nascita" class="input-campo">
+            <button type="submit" class="btn-primario" style="margin-top:20px;">Salva modifiche</button>
+            <div class="errore" id="err-profilo"></div>
+            <div id="ok-profilo" style="color:#155724;font-size:13px;margin-top:8px;"></div>
+          </form>
+          <hr class="profilo-divider">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <input type="checkbox" id="consenso-dossier" style="width:18px;height:18px;cursor:pointer;" onchange="aggiornaConsenso()">
+            <label for="consenso-dossier" style="cursor:pointer;font-size:14px;">
+              <strong>Dossier Sanitario Condiviso</strong><br>
+              <span style="font-size:12px;color:#9a8a6f;">Acconsento a rendere visibili i miei referti pregressi ai medici della struttura presso cui ho un appuntamento confermato (revocabile in qualsiasi momento).</span>
+            </label>
+          </div>
+          <div id="ok-consenso" style="color:#155724;font-size:13px;margin-top:8px;min-height:18px;"></div>
+        </div>
+      </section>
+
+      <!-- ── REFERTI ── -->
+      <section id="s-referti" class="sezione nascosta">
+        <div id="lista-referti"></div>
+      </section>
+
+      <footer class="footer-legale">
+        <strong>Poliambulatorio Vita Serena S.r.l.</strong> — Sede Legale: Via Roma 10, Milano —
+        P.IVA/C.F.: 12345678901 — PEC: direzione@pec.vitaserena.it —
+        Dir. Sanitario: Dr. Mario Rossi — <a href="/privacy" target="_blank">Privacy Policy</a>
+      </footer>
+
+    </main>
+  </div>
+
+  <div id="cookie-banner" class="cookie-banner nascosta">
+    <p>Questo sito utilizza cookie tecnici necessari al funzionamento e non traccia dati per finalità di marketing. Consultando l'informativa accetti l'uso dei cookie tecnici. <a href="/privacy" target="_blank">Privacy Policy</a></p>
+    <button class="btn-primario" onclick="accettaCookie()">Accetto</button>
+  </div>
+
+  <!-- ── MODALE DETTAGLIO REFERTO ── -->
+  <div class="overlay nascosta" id="modale-referto">
+    <div class="modale">
+      <h3 id="referto-titolo"></h3>
+      <div id="referto-contenuto"></div>
+      <div class="modale-azioni" style="margin-top:20px;">
+        <button class="btn-secondario" onclick="chiudiModale('modale-referto')">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODALE DETTAGLIO ── -->
+  <div class="overlay nascosta" id="modale-dettaglio">
+    <div class="modale">
+      <h3>Dettaglio appuntamento</h3>
+      <div id="dettaglio-contenuto"></div>
+      <div class="modale-azioni" style="margin-top:20px;">
+        <button class="btn-secondario" onclick="chiudiModale('modale-dettaglio')">Chiudi</button>
+        <button class="btn-danger" id="btn-cancella-modale" onclick="cancellaAppuntamentoDaModale()">Cancella visita</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/cookie-consent.js"></script>
+  <script src="/static/js/dashboard-paziente.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #f7f5ef;
+  color: #2c2c2a;
+}
+
+/* ── Layout ── */
+.layout-admin {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background: #1c2b45;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+}
+
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  font-size: 18px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  color: white;
+}
+
+.sidebar-logo .logo-serif { font-family: Georgia, serif; }
+.sidebar-logo .logo-sans  { color: #6fa8dc; }
+
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-item:hover  { background: rgba(255,255,255,0.07); color: white; }
+.nav-item.attivo { background: rgba(255,255,255,0.12); color: white; }
+
+.nav-icon { font-size: 13px; width: 18px; text-align: center; }
+
+.btn-logout-sidebar {
+  margin: 16px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  cursor: pointer;
+}
+.btn-logout-sidebar:hover { border-color: rgba(255,255,255,0.4); color: white; }
+
+/* ── Main ── */
+.admin-main {
+  margin-left: 220px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  background: white;
+  border-bottom: 1px solid #ede9e0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.admin-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1c2b45;
+}
+
+.nome-admin {
+  font-size: 13px;
+  color: #9a8a6f;
+}
+
+/* ── Sezioni ── */
+.sezione {
+  padding: 28px 32px;
+}
+
+.nascosta { display: none !important; }
+
+/* ── Stats ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 14px;
+  padding: 24px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.stat-card.accent { background: #1c2b45; }
+.stat-card.accent .stat-valore,
+.stat-card.accent .stat-label { color: white; }
+
+.stat-valore {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1c2b45;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #9a8a6f;
+}
+
+/* ── Barra azioni ── */
+.barra-azioni {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* ── Bottoni ── */
+.btn-primario {
+  padding: 9px 18px;
+  background: #1c2b45;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-primario:hover { background: #142035; }
+
+.btn-secondario {
+  padding: 9px 18px;
+  background: transparent;
+  color: #6b5a45;
+  border: 1px solid #c8c4bb;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-secondario:hover { background: #f1efe8; }
+
+.btn-danger {
+  padding: 5px 12px;
+  background: transparent;
+  color: #a32d2d;
+  border: 1px solid #e8c4c4;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn-danger:hover { background: #fdf0f0; }
+
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.azioni-cella { display: flex; gap: 6px; align-items: center; }
+
+/* ── Input ── */
+.input-campo {
+  padding: 9px 12px;
+  border: 1px solid #ddd9d0;
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  color: #2c2c2a;
+  min-width: 160px;
+}
+.input-campo:focus { outline: 2px solid #3b7dd8; border-color: transparent; }
+.input-durata { min-width: 100px; padding: 6px 10px; font-size: 13px; }
+
+/* ── Tabella ── */
+.admin-tabella {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-size: 14px;
+}
+
+.admin-tabella thead tr { background: #f7f5ef; }
+.admin-tabella th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a8a6f;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #ede9e0;
+}
+
+.admin-tabella td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1efe8;
+  color: #2c2c2a;
+}
+
+.admin-tabella tbody tr:last-child td { border-bottom: none; }
+.admin-tabella tbody tr:hover { background: #faf9f5; }
+
+/* ── Badge stato ── */
+.badge-stato {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.badge-ok         { background: #d4edda; color: #155724; }
+.badge-attesa     { background: #fff3cd; color: #856404; }
+.badge-no         { background: #f8d7da; color: #721c24; }
+.badge-completato { background: #e8eaf6; color: #3949ab; }
+
+/* ── Vuoto ── */
+.vuoto {
+  color: #9a8a6f;
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+/* ── Gruppo titolo calendario ── */
+.gruppo-titolo {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1c2b45;
+  margin: 24px 0 8px;
+}
+
+/* ── Overlay / Modale ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modale {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  width: 420px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.modale h3 {
+  margin: 0 0 20px;
+  font-size: 18px;
+  color: #1c2b45;
+}
+
+.modale label {
+  display: block;
+  font-size: 13px;
+  color: #6b5a45;
+  margin: 12px 0 4px;
+}
+
+.modale .input-campo { width: 100%; }
+
+.modale-azioni {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.errore {
+  color: #a32d2d;
+  font-size: 13px;
+  margin-top: 8px;
+  min-height: 16px;
+}
+
+/* ── Password box ── */
+.password-box {
+  background: #f1efe8;
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1c2b45;
+  letter-spacing: 0.08em;
+  text-align: center;
+}

@@ -1,0 +1,241 @@
+/* ── Wrapper calendario ── */
+.cal-wrapper {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* ── Box calendario ── */
+.cal-box {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 24px;
+  width: 360px;
+  flex-shrink: 0;
+}
+
+/* ── Navigazione mese ── */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.cal-titolo {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c2b45;
+  text-transform: capitalize;
+}
+
+.cal-nav-btn {
+  background: #f1efe8;
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: #1c2b45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cal-nav-btn:hover { background: #e4e0d8; }
+
+/* ── Intestazione giorni ── */
+.cal-intestazione {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 6px;
+}
+.cal-intestazione div {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #9a8a6f;
+  text-transform: uppercase;
+  padding: 4px 0;
+}
+
+/* ── Griglia giorni ── */
+.cal-giorni {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.cal-cella {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.12s;
+  padding: 2px;
+}
+.cal-cella:hover:not(.passato):not(.vuota) { background: #f1efe8; }
+.cal-cella.vuota { cursor: default; }
+.cal-cella.passato { opacity: 0.35; cursor: default; pointer-events: none; }
+
+.cal-cella.oggi .cal-num {
+  background: #1c2b45;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cal-cella.selezionato {
+  background: #e9f0fb;
+  outline: 2px solid #3b7dd8;
+}
+
+.cal-num {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c2c2a;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Dot indicatori ── */
+.cal-dots {
+  display: flex;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-libero    { background: #3b7dd8; }
+.dot-prenotato { background: #e6a817; }
+
+/* ── Legenda ── */
+.cal-legenda {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #f1efe8;
+  font-size: 12px;
+  color: #9a8a6f;
+}
+.cal-legenda span { display: flex; align-items: center; gap: 5px; }
+
+/* ── Dettaglio giorno ── */
+.cal-dettaglio {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 24px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.dettaglio-titolo {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #1c2b45;
+  text-transform: capitalize;
+}
+
+.dettaglio-hint {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: #9a8a6f;
+}
+
+/* ── Griglia ore ── */
+.ore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.ora-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  line-height: 1.2;
+}
+
+.ora-label {
+  font-size: 10px;
+  font-weight: 400;
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ora-vuota {
+  background: #f7f5ef;
+  color: #9a8a6f;
+  border-color: #e4e0d8;
+}
+.ora-vuota:hover {
+  background: #e9f0fb;
+  border-color: #3b7dd8;
+  color: #1c2b45;
+}
+
+.ora-libera {
+  background: #dbeafe;
+  color: #1c2b45;
+  border-color: #3b7dd8;
+}
+.ora-libera:hover {
+  background: #f8d7da;
+  border-color: #a32d2d;
+  color: #a32d2d;
+}
+.ora-libera:hover .ora-label::before { content: ''; }
+
+.ora-prenotata {
+  background: #fff3cd;
+  color: #856404;
+  border-color: #e6a817;
+  cursor: not-allowed;
+}
+
+/* ── Dossier pazienti ──────────────────────────────────────────────────────── */
+
+.paziente-riga {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #ede9e0;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.paziente-riga:hover {
+  border-color: #3b7dd8;
+  box-shadow: 0 3px 12px rgba(59,125,216,0.1);
+}

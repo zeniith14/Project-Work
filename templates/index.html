@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Vita Serena - Accedi</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="pagina-login">
+    <div class="intestazione">
+      <h1><span class="logo-serif">Vita</span> <span class="logo-sans">Serena</span></h1>
+      <span class="badge">Poliambulatorio</span>
+    </div>
+
+    <div class="card">
+      <div class="tabs">
+        <button class="tab attivo" id="tab-accedi" onclick="mostraTab('accedi')" type="button">Accedi</button>
+        <button class="tab" id="tab-registrati" onclick="mostraTab('registrati')" type="button">Registrati</button>
+      </div>
+
+      <form id="form-accedi" class="form-tab" onsubmit="return false;">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" autocomplete="email" required>
+
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" autocomplete="current-password" required>
+
+        <button type="submit" class="btn-principale">Accedi</button>
+        <div class="errore" id="login-errore"></div>
+      </form>
+
+      <form id="form-registrati" class="form-tab" style="display:none;" onsubmit="return false;">
+        <label for="reg-nome">Nome</label>
+        <input type="text" id="reg-nome" required>
+
+        <label for="reg-cognome">Cognome</label>
+        <input type="text" id="reg-cognome" required>
+
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email" required>
+
+        <label for="reg-password">Password</label>
+        <input type="password" id="reg-password" required>
+
+        <label for="reg-telefono">Telefono</label>
+        <input type="text" id="reg-telefono">
+
+        <label for="reg-nascita">Data di nascita</label>
+        <input type="date" id="reg-nascita" required>
+
+        <button type="submit" class="btn-principale">Registrati</button>
+        <div class="errore" id="reg-errore"></div>
+      </form>
+
+      <button type="button" class="link-secondario" onclick="mostraRecuperoPassword()">Hai dimenticato la password?</button>
+      <div id="msg-recupero" style="display:none;margin-top:12px;padding:12px 16px;background:#f7f5ef;border-radius:10px;font-size:13px;color:#6b5a45;text-align:center;">
+        Per reimpostare la password contatta la <strong>segreteria</strong> del poliambulatorio.<br>
+        La segreteria potrà generarti una nuova password temporanea.
+      </div>
+    </div>
+  </div>
+
+  <div id="cookie-banner" class="cookie-banner nascosta">
+    <p>Questo sito utilizza cookie tecnici necessari al funzionamento e non traccia dati per finalità di marketing. Consultando l'informativa accetti l'uso dei cookie tecnici. <a href="/privacy" target="_blank">Privacy Policy</a></p>
+    <button class="btn-primario" onclick="accettaCookie()">Accetto</button>
+  </div>
+
+  <script src="/static/js/cookie-consent.js"></script>
+  <script src="/static/js/login.js"></script>
+</body>
+</html>

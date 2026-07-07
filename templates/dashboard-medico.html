@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Vita Serena - Medico</title>
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<link rel="stylesheet" href="/static/css/admin.css">
+<link rel="stylesheet" href="/static/css/medico.css">
+</head>
+<body>
+  <div class="layout-admin">
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-serif">Vita</span> <span class="logo-sans">Serena</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item attivo" data-sezione="appuntamenti">
+          <span class="nav-icon">☰</span> Appuntamenti
+        </button>
+        <button class="nav-item" data-sezione="disponibilita">
+          <span class="nav-icon">◫</span> Disponibilità
+        </button>
+        <button class="nav-item" data-sezione="dossier">
+          <span class="nav-icon">▤</span> Dossier pazienti
+        </button>
+        <button class="nav-item" data-sezione="impostazioni">
+          <span class="nav-icon">⚙</span> Impostazioni
+        </button>
+      </nav>
+      <button class="btn-logout-sidebar" onclick="logout()">Esci</button>
+    </aside>
+
+    <main class="admin-main">
+
+      <header class="admin-header">
+        <h2 class="titolo-sezione" id="titolo-sezione">Appuntamenti</h2>
+        <span id="nome-medico" class="nome-admin"></span>
+      </header>
+
+      <!-- ── APPUNTAMENTI ── -->
+      <section id="s-appuntamenti" class="sezione">
+        <div class="barra-azioni">
+          <select id="filtro-stato" class="input-campo">
+            <option value="">Tutti</option>
+            <option value="in_attesa">In attesa</option>
+            <option value="confermato">Confermati</option>
+            <option value="cancellato">Cancellati</option>
+            <option value="completato">Completati</option>
+          </select>
+          <button class="btn-primario" onclick="caricaAppuntamenti()">Filtra</button>
+        </div>
+        <div id="tabella-appuntamenti"></div>
+      </section>
+
+      <!-- ── DOSSIER PAZIENTI ── -->
+      <section id="s-dossier" class="sezione nascosta">
+        <p style="font-size:13px;color:#9a8a6f;margin:0 0 16px;">
+          Pazienti con appuntamento confermato. Clicca su un paziente per consultarne i referti:
+          vedrai il dossier completo solo se il paziente ha prestato il consenso, altrimenti solo i referti redatti da te.
+        </p>
+        <div id="lista-dossier-pazienti"></div>
+        <div id="dossier-referti" style="margin-top:24px;"></div>
+      </section>
+
+      <!-- ── DISPONIBILITÀ ── -->
+      <section id="s-disponibilita" class="sezione nascosta">
+        <div class="cal-wrapper">
+
+          <!-- Calendario -->
+          <div class="cal-box">
+            <div class="cal-nav">
+              <button class="cal-nav-btn" onclick="cambioMese(-1)">&#8249;</button>
+              <span id="cal-titolo" class="cal-titolo"></span>
+              <button class="cal-nav-btn" onclick="cambioMese(1)">&#8250;</button>
+            </div>
+            <div class="cal-intestazione">
+              <div>Lun</div><div>Mar</div><div>Mer</div>
+              <div>Gio</div><div>Ven</div><div>Sab</div><div>Dom</div>
+            </div>
+            <div class="cal-giorni" id="cal-giorni"></div>
+            <div class="cal-legenda">
+              <span><span class="dot dot-libero"></span> Libero</span>
+              <span><span class="dot dot-prenotato"></span> Prenotato</span>
+            </div>
+          </div>
+
+          <!-- Dettaglio giorno -->
+          <div class="cal-dettaglio nascosta" id="dettaglio-giorno">
+            <h3 id="dettaglio-titolo" class="dettaglio-titolo"></h3>
+            <p class="dettaglio-hint">Clicca un'ora per aggiungere o rimuovere la disponibilità.</p>
+            <div class="ore-grid" id="ore-grid"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── IMPOSTAZIONI ── -->
+      <section id="s-impostazioni" class="sezione nascosta">
+        <div class="profilo-card" style="max-width:420px;">
+          <div class="profilo-nome" id="imp-nome"></div>
+          <div class="profilo-email" id="imp-specialita"></div>
+          <hr class="profilo-divider">
+          <label style="display:block;font-size:13px;color:#6b5a45;margin-bottom:8px;">Durata visita per appuntamento</label>
+          <select id="imp-durata" class="input-campo" style="width:100%;">
+            <option value="15">15 minuti</option>
+            <option value="20">20 minuti</option>
+            <option value="30">30 minuti</option>
+            <option value="45">45 minuti</option>
+            <option value="60">60 minuti</option>
+            <option value="90">90 minuti</option>
+          </select>
+          <p style="font-size:12px;color:#9a8a6f;margin-top:8px;">
+            Questa impostazione determina la durata degli slot di disponibilità che aggiungi nel calendario.
+          </p>
+          <button class="btn-primario" style="margin-top:16px;width:100%;padding:12px;" onclick="salvaImpostazioni()">Salva</button>
+          <div class="errore" id="err-imp"></div>
+          <div style="color:#27ae60;font-size:13px;margin-top:6px;min-height:18px;" id="ok-imp"></div>
+        </div>
+      </section>
+
+      <footer class="footer-legale">
+        <strong>Poliambulatorio Vita Serena S.r.l.</strong> — Sede Legale: Via Roma 10, Milano —
+        P.IVA/C.F.: 12345678901 — PEC: direzione@pec.vitaserena.it —
+        Dir. Sanitario: Dr. Mario Rossi — <a href="/privacy" target="_blank">Privacy Policy</a>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- ── MODALE REFERTO ── -->
+  <div class="overlay nascosta" id="modale-referto">
+    <div class="modale">
+      <h3>Scrivi referto</h3>
+      <p id="ref-paziente" style="font-size:13px;color:#9a8a6f;margin:4px 0 16px;"></p>
+      <label>Titolo</label>
+      <input type="text" id="ref-titolo" class="input-campo" maxlength="200" placeholder="Es. Referto visita cardiologica">
+      <label style="margin-top:12px;display:block;">Contenuto</label>
+      <textarea id="ref-contenuto" class="input-campo" rows="8" placeholder="Esito della visita, diagnosi, prescrizioni..."></textarea>
+      <div class="errore" id="err-referto"></div>
+      <div class="modale-azioni" style="margin-top:16px;">
+        <button class="btn-secondario" onclick="chiudiModale('modale-referto')">Annulla</button>
+        <button class="btn-primario" onclick="salvaReferto()">Salva referto</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cookie-banner" class="cookie-banner nascosta">
+    <p>Questo sito utilizza cookie tecnici necessari al funzionamento e non traccia dati per finalità di marketing. Consultando l'informativa accetti l'uso dei cookie tecnici. <a href="/privacy" target="_blank">Privacy Policy</a></p>
+    <button class="btn-primario" onclick="accettaCookie()">Accetto</button>
+  </div>
+
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/cookie-consent.js"></script>
+  <script src="/static/js/dashboard-medico.js"></script>
+</body>
+</html>

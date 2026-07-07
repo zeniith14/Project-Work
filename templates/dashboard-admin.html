@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Vita Serena - Admin</title>
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+  <div class="layout-admin">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-serif">Vita</span> <span class="logo-sans">Serena</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item attivo" data-sezione="overview">
+          <span class="nav-icon">▦</span> Dashboard
+        </button>
+        <button class="nav-item" data-sezione="calendario">
+          <span class="nav-icon">◫</span> Calendario
+        </button>
+        <button class="nav-item" data-sezione="appuntamenti">
+          <span class="nav-icon">☰</span> Appuntamenti
+        </button>
+        <button class="nav-item" data-sezione="medici">
+          <span class="nav-icon">✚</span> Medici
+        </button>
+        <button class="nav-item" data-sezione="segreteria">
+          <span class="nav-icon">◈</span> Segreteria
+        </button>
+        <button class="nav-item" data-sezione="pazienti">
+          <span class="nav-icon">◉</span> Pazienti
+        </button>
+        <button class="nav-item" data-sezione="specialita">
+          <span class="nav-icon">◆</span> Specialità
+        </button>
+      </nav>
+      <button class="btn-logout-sidebar" onclick="logout()">Esci</button>
+    </aside>
+
+    <!-- Contenuto principale -->
+    <main class="admin-main">
+
+      <!-- Header -->
+      <header class="admin-header">
+        <h2 class="titolo-sezione" id="titolo-sezione">Dashboard</h2>
+        <span id="nome-admin" class="nome-admin"></span>
+      </header>
+
+      <!-- ── OVERVIEW ── -->
+      <section id="s-overview" class="sezione">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-valore" id="st-tot-appuntamenti">—</div>
+            <div class="stat-label">Appuntamenti totali</div>
+          </div>
+          <div class="stat-card accent">
+            <div class="stat-valore" id="st-oggi">—</div>
+            <div class="stat-label">Appuntamenti oggi</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-valore" id="st-attesa">—</div>
+            <div class="stat-label">In attesa di conferma</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-valore" id="st-medici">—</div>
+            <div class="stat-label">Medici attivi</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-valore" id="st-pazienti">—</div>
+            <div class="stat-label">Pazienti registrati</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CALENDARIO ── -->
+      <section id="s-calendario" class="sezione nascosta">
+        <div class="barra-azioni">
+          <input type="date" id="data-calendario" class="input-campo">
+          <button class="btn-primario" onclick="caricaCalendario()">Visualizza</button>
+        </div>
+        <div id="risultato-calendario"></div>
+      </section>
+
+      <!-- ── APPUNTAMENTI ── -->
+      <section id="s-appuntamenti" class="sezione nascosta">
+        <div class="barra-azioni">
+          <select id="filtro-stato" class="input-campo">
+            <option value="">Tutti</option>
+            <option value="in_attesa">In attesa</option>
+            <option value="confermato">Confermati</option>
+            <option value="cancellato">Cancellati</option>
+          </select>
+          <button class="btn-primario" onclick="caricaAppuntamenti()">Filtra</button>
+        </div>
+        <div id="tabella-appuntamenti"></div>
+      </section>
+
+      <!-- ── MEDICI ── -->
+      <section id="s-medici" class="sezione nascosta">
+        <div class="barra-azioni">
+          <button class="btn-primario" onclick="apriModale('modale-medico')">+ Nuovo medico</button>
+        </div>
+        <div id="tabella-medici"></div>
+      </section>
+
+      <!-- ── SEGRETERIA ── -->
+      <section id="s-segreteria" class="sezione nascosta">
+        <div class="barra-azioni">
+          <button class="btn-primario" onclick="apriModale('modale-segreteria')">+ Nuova segreteria</button>
+        </div>
+        <div id="tabella-segreteria"></div>
+      </section>
+
+      <!-- ── PAZIENTI ── -->
+      <section id="s-pazienti" class="sezione nascosta">
+        <div id="tabella-pazienti"></div>
+      </section>
+
+      <!-- ── SPECIALITÀ ── -->
+      <section id="s-specialita" class="sezione nascosta">
+        <div class="barra-azioni">
+          <input type="text" id="nuova-specialita-nome" class="input-campo" placeholder="Nome specialità">
+          <input type="text" id="nuova-specialita-desc" class="input-campo" placeholder="Descrizione (opzionale)">
+          <button class="btn-primario" onclick="creaSpecialita()">Aggiungi</button>
+        </div>
+        <div id="tabella-specialita"></div>
+      </section>
+
+      <footer class="footer-legale">
+        <strong>Poliambulatorio Vita Serena S.r.l.</strong> — Sede Legale: Via Roma 10, Milano —
+        P.IVA/C.F.: 12345678901 — PEC: direzione@pec.vitaserena.it —
+        Dir. Sanitario: Dr. Mario Rossi — <a href="/privacy" target="_blank">Privacy Policy</a>
+      </footer>
+
+    </main>
+  </div>
+
+  <div id="cookie-banner" class="cookie-banner nascosta">
+    <p>Questo sito utilizza cookie tecnici necessari al funzionamento e non traccia dati per finalità di marketing. Consultando l'informativa accetti l'uso dei cookie tecnici. <a href="/privacy" target="_blank">Privacy Policy</a></p>
+    <button class="btn-primario" onclick="accettaCookie()">Accetto</button>
+  </div>
+
+  <!-- ── MODALE NUOVO MEDICO ── -->
+  <div class="overlay nascosta" id="modale-medico">
+    <div class="modale">
+      <h3>Nuovo medico</h3>
+      <form id="form-medico" onsubmit="submitMedico(event)">
+        <label>Nome</label>
+        <input type="text" id="m-nome" class="input-campo" required>
+        <label>Cognome</label>
+        <input type="text" id="m-cognome" class="input-campo" required>
+        <label>Email</label>
+        <input type="email" id="m-email" class="input-campo" required>
+        <label>Specialità</label>
+        <select id="m-specialita" class="input-campo" required></select>
+        <label>Durata visita</label>
+        <select id="m-durata" class="input-campo">
+          <option value="15">15 minuti</option>
+          <option value="20">20 minuti</option>
+          <option value="30">30 minuti</option>
+          <option value="45">45 minuti</option>
+          <option value="60" selected>60 minuti</option>
+          <option value="90">90 minuti</option>
+        </select>
+        <div class="modale-azioni">
+          <button type="button" class="btn-secondario" onclick="chiudiModale('modale-medico')">Annulla</button>
+          <button type="submit" class="btn-primario">Crea</button>
+        </div>
+        <div class="errore" id="err-medico"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── MODALE NUOVA SEGRETERIA ── -->
+  <div class="overlay nascosta" id="modale-segreteria">
+    <div class="modale">
+      <h3>Nuova segreteria</h3>
+      <form id="form-segreteria" onsubmit="submitSegreteria(event)">
+        <label>Nome</label>
+        <input type="text" id="seg-nome" class="input-campo" required>
+        <label>Cognome</label>
+        <input type="text" id="seg-cognome" class="input-campo" required>
+        <label>Email</label>
+        <input type="email" id="seg-email" class="input-campo" required>
+        <div class="modale-azioni">
+          <button type="button" class="btn-secondario" onclick="chiudiModale('modale-segreteria')">Annulla</button>
+          <button type="submit" class="btn-primario">Crea</button>
+        </div>
+        <div class="errore" id="err-segreteria"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── MODALE PASSWORD MONOUSO ── -->
+  <div class="overlay nascosta" id="modale-password">
+    <div class="modale">
+      <h3>Account creato</h3>
+      <p style="font-size:14px;color:#6b5a45;margin-bottom:12px;">
+        Comunica questa password temporanea all'utente. Al primo accesso sarà obbligato a cambiarla.
+      </p>
+      <div class="password-box" id="password-monouso-testo"></div>
+      <div class="modale-azioni" style="margin-top:20px;">
+        <button class="btn-primario" onclick="chiudiModale('modale-password')">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/cookie-consent.js"></script>
+  <script src="/static/js/admin.js"></script>
+</body>
+</html>

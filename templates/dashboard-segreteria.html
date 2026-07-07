@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Vita Serena - Segreteria</title>
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<link rel="stylesheet" href="/static/css/admin.css">
+<link rel="stylesheet" href="/static/css/segreteria.css">
+</head>
+<body>
+  <div class="layout-admin">
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-serif">Vita</span> <span class="logo-sans">Serena</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item attivo" data-sezione="oggi">
+          <span class="nav-icon">◷</span> Oggi
+        </button>
+        <button class="nav-item" data-sezione="appuntamenti">
+          <span class="nav-icon">☰</span> Appuntamenti
+        </button>
+        <button class="nav-item" data-sezione="nuova">
+          <span class="nav-icon">✚</span> Nuova prenotazione
+        </button>
+        <button class="nav-item" data-sezione="slot">
+          <span class="nav-icon">◫</span> Slot medici
+        </button>
+        <button class="nav-item" data-sezione="pazienti">
+          <span class="nav-icon">◉</span> Cerca paziente
+        </button>
+      </nav>
+      <button class="btn-logout-sidebar" onclick="logout()">Esci</button>
+    </aside>
+
+    <main class="admin-main">
+
+      <header class="admin-header">
+        <h2 class="titolo-sezione" id="titolo-sezione">Riepilogo di oggi</h2>
+        <span id="nome-segreteria" class="nome-admin"></span>
+      </header>
+
+      <!-- ── OGGI ── -->
+      <section id="s-oggi" class="sezione">
+        <div id="lista-oggi"></div>
+      </section>
+
+      <!-- ── APPUNTAMENTI ── -->
+      <section id="s-appuntamenti" class="sezione nascosta">
+        <div class="barra-azioni">
+          <select id="f-stato" class="input-campo">
+            <option value="">Tutti gli stati</option>
+            <option value="in_attesa">In attesa</option>
+            <option value="confermato">Confermati</option>
+            <option value="cancellato">Cancellati</option>
+          </select>
+          <select id="f-medico" class="input-campo">
+            <option value="">Tutti i medici</option>
+          </select>
+          <select id="f-specialita" class="input-campo">
+            <option value="">Tutte le specialità</option>
+          </select>
+          <input type="date" id="f-data" class="input-campo">
+          <button class="btn-primario" onclick="filtraAppuntamenti()">Filtra</button>
+          <button class="btn-secondario" onclick="resetFiltri()">Reset</button>
+        </div>
+        <div id="tabella-appuntamenti"></div>
+      </section>
+
+      <!-- ── NUOVA PRENOTAZIONE ── -->
+      <section id="s-nuova" class="sezione nascosta">
+        <div class="wizard">
+
+          <div class="wizard-step" id="ns-1">
+            <div class="step-header"><span class="step-num">1</span> Cerca il paziente</div>
+            <div class="barra-azioni">
+              <input type="text" id="cerca-paziente" class="input-campo" placeholder="Nome, cognome o email...">
+              <button class="btn-primario" onclick="cercaPaziente()">Cerca</button>
+            </div>
+            <div id="risultati-pazienti"></div>
+          </div>
+
+          <div class="wizard-step nascosta" id="ns-2">
+            <div class="step-header">
+              <span class="step-num">2</span> Scegli specialità e medico
+              <button class="btn-back" onclick="tornaNs(1)">← Indietro</button>
+            </div>
+            <div class="paziente-selezionato-box" id="paziente-selezionato-box"></div>
+            <label style="font-size:13px;color:#6b5a45;margin:16px 0 6px;display:block;">Specialità</label>
+            <select id="ns-specialita" class="input-campo" onchange="caricaMediciNs()">
+              <option value="">— seleziona —</option>
+            </select>
+            <label style="font-size:13px;color:#6b5a45;margin:16px 0 6px;display:block;">Medico</label>
+            <select id="ns-medico" class="input-campo" onchange="caricaSlotNs()">
+              <option value="">— seleziona prima la specialità —</option>
+            </select>
+          </div>
+
+          <div class="wizard-step nascosta" id="ns-3">
+            <div class="step-header">
+              <span class="step-num">3</span> Scegli lo slot
+              <button class="btn-back" onclick="tornaNs(2)">← Indietro</button>
+            </div>
+            <div id="slot-ns"></div>
+          </div>
+
+          <div class="wizard-step nascosta" id="ns-4">
+            <div class="step-header">
+              <span class="step-num">4</span> Conferma
+              <button class="btn-back" onclick="tornaNs(3)">← Indietro</button>
+            </div>
+            <div class="riepilogo-box" id="ns-riepilogo"></div>
+            <label class="note-label" style="margin-top:16px;display:block;font-size:13px;color:#6b5a45;">Note</label>
+            <textarea id="ns-note" class="input-campo" style="width:100%;height:70px;resize:vertical;margin-top:6px;"></textarea>
+            <button class="btn-primario" style="margin-top:16px;width:100%;padding:13px;" onclick="confermaNs()">Crea appuntamento</button>
+            <div class="errore" id="err-ns"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── SLOT MEDICI ── -->
+      <section id="s-slot" class="sezione nascosta">
+        <div class="slot-layout">
+
+          <!-- Form aggiunta -->
+          <div class="slot-form-card">
+            <h3 class="slot-form-titolo">Aggiungi disponibilità</h3>
+            <label class="slot-label">Medico</label>
+            <select id="slot-medico-sel" class="input-campo" onchange="caricaSlotMedico(); aggiornaOreSlot()">
+              <option value="">— seleziona medico —</option>
+            </select>
+            <label class="slot-label">Data</label>
+            <input type="date" id="slot-data" class="input-campo" onchange="aggiornaOreSlot()">
+            <label class="slot-label">Seleziona ora</label>
+            <div class="ore-grid" id="ore-grid-slot"></div>
+            <div class="errore" id="err-slot" style="margin-top:12px;"></div>
+          </div>
+
+          <!-- Lista slot -->
+          <div class="slot-lista-card">
+            <h3 class="slot-form-titolo">Slot del medico selezionato</h3>
+            <div id="tabella-slot"><p class="vuoto">Seleziona un medico per vedere gli slot.</p></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── CERCA PAZIENTE ── -->
+      <section id="s-pazienti" class="sezione nascosta">
+        <div class="barra-azioni">
+          <input type="text" id="cerca-p2" class="input-campo" placeholder="Nome, cognome o email...">
+          <button class="btn-primario" onclick="cercaPazienteDettaglio()">Cerca</button>
+        </div>
+        <div id="risultati-p2"></div>
+      </section>
+
+      <footer class="footer-legale">
+        <strong>Poliambulatorio Vita Serena S.r.l.</strong> — Sede Legale: Via Roma 10, Milano —
+        P.IVA/C.F.: 12345678901 — PEC: direzione@pec.vitaserena.it —
+        Dir. Sanitario: Dr. Mario Rossi — <a href="/privacy" target="_blank">Privacy Policy</a>
+      </footer>
+
+    </main>
+  </div>
+
+  <div id="cookie-banner" class="cookie-banner nascosta">
+    <p>Questo sito utilizza cookie tecnici necessari al funzionamento e non traccia dati per finalità di marketing. Consultando l'informativa accetti l'uso dei cookie tecnici. <a href="/privacy" target="_blank">Privacy Policy</a></p>
+    <button class="btn-primario" onclick="accettaCookie()">Accetto</button>
+  </div>
+
+  <!-- ── MODALE CHECK-IN ── -->
+  <div class="overlay nascosta" id="modale-checkin">
+    <div class="modale">
+      <h3>Richiedi conferma presenza</h3>
+      <p style="font-size:14px;color:#6b5a45;margin-bottom:16px;">
+        Il paziente vedrà una notifica nella sua dashboard e dovrà confermare entro il limite scelto.
+      </p>
+      <label style="font-size:13px;color:#6b5a45;">Ore di anticipo per la scadenza</label>
+      <select id="checkin-ore" class="input-campo" style="width:100%;margin-top:6px;">
+        <option value="6">6 ore prima</option>
+        <option value="12">12 ore prima</option>
+        <option value="24" selected>24 ore prima</option>
+        <option value="48">48 ore prima</option>
+      </select>
+      <div class="modale-azioni" style="margin-top:20px;">
+        <button class="btn-secondario" onclick="chiudiModale('modale-checkin')">Annulla</button>
+        <button class="btn-primario" onclick="inviaCheckin()">Invia richiesta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODALE DETTAGLIO PAZIENTE ── -->
+  <div class="overlay nascosta" id="modale-paziente">
+    <div class="modale modale-large">
+      <h3 id="mp-titolo"></h3>
+      <div id="mp-info"></div>
+      <h4 style="margin:20px 0 10px;font-size:14px;color:#1c2b45;">Appuntamenti</h4>
+      <div id="mp-appuntamenti"></div>
+      <div class="modale-azioni" style="margin-top:16px;">
+        <button class="btn-secondario" onclick="chiudiModale('modale-paziente')">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/cookie-consent.js"></script>
+  <script src="/static/js/dashboard-segreteria.js"></script>
+</body>
+</html>
