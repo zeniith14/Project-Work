@@ -1,6 +1,6 @@
-# Vita Serena — Piattaforma digitale per la gestione delle prenotazioni di un poliambulatorio
+# Vita Serena - Piattaforma digitale per la gestione delle prenotazioni di un poliambulatorio
 
-Project Work — Corso di Laurea in Informatica per le Aziende Digitali (L-31), Università Telematica Pegaso.
+Project Work - Corso di Laurea in Informatica per le Aziende Digitali (L-31), Università Telematica Pegaso.
 Traccia PW 16: sviluppo di un'applicazione full-stack API-based per un'organizzazione del settore sanitario.
 
 ## Descrizione
@@ -115,4 +115,4 @@ Trattandosi di un'applicazione che gestisce dati sanitari (categoria particolare
 
 ## Autore
 
-Giuseppe Carbone — Corso di Laurea in Informatica per le Aziende Digitali (L-31), Università Telematica Pegaso
+Giuseppe Carbone - Corso di Laurea in Informatica per le Aziende Digitali (L-31), Università Telematica Pegaso
